@@ -1,7 +1,11 @@
+import { AuthManager } from "../common/AuthManager";
+
 export class LoginCommand {
   constructor() {}
 
   async run() {
-    console.log("Logging in.");
+    const user = await AuthManager.instance.authorizeOIDC();
+
+    console.log(`Logged in as ${user.email} [${user.name}]!`);
   }
 }
