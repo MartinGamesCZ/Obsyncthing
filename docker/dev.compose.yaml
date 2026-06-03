@@ -1,0 +1,39 @@
+services:
+  backend:
+    build:
+      context: ../repos/backend
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ../repos/backend:/app
+      - /app/node_modules
+      - /app/dist
+    restart: unless-stopped
+    env_file:
+      - ../backend.env
+    ports:
+      - "3000:3000"
+    networks:
+      default:
+    depends_on:
+      timescale:
+        condition: service_healthy
+
+  timescale:
+    image: timescale/timescaledb:latest-pg18
+    volumes:
+      - ../.data/timescale:/pgdata
+    environment:
+      - PGDATA=/pgdata
+    env_file:
+      - ../timescale.env
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+networks:
+  default:
