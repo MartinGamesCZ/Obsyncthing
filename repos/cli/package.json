@@ -1,0 +1,20 @@
+{
+  "name": "cli",
+  "module": "src/index.ts",
+  "version": "v0.0.1",
+  "bin": {
+    "obsync": "./dist/index.js"
+  },
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "watch": "bun build src/index.ts --minify --outfile dist/index.js --target node --banner \"#!/usr/bin/env node\" --watch"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "conf": "^15.1.0",
+    "openid-client": "^6.8.4"
+  }
+}
